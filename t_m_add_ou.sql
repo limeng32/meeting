@@ -1,13 +1,12 @@
-CREATE DEFINER=`sa`@`%` PROCEDURE `t_m_add_room_linker`(
+CREATE DEFINER=`sa`@`%` PROCEDURE `t_m_add_ou`(
 	_name nvarchar(40),
+    _address nvarchar(60),
     _tel nvarchar(40),
-    _mail nvarchar(100),
+    _description nvarchar(60),
     _creater_id nvarchar(40),
-    _creater_name nvarchar(40),
-    _ou_id int(11)
+    _creater_name nvarchar(40)
 )
 BEGIN
-
 	SET NAMES utf8;
 	SET @RetCode='1';
 	SET @RetVal='1';
@@ -15,17 +14,22 @@ BEGIN
     if(_name = null or _name = '')
 		then
         SET @RetCode='0';
-		SET @RetVal='物业接口人姓名不能为空';
+		SET @RetVal='名称不能为空';
+	end if;
+    if(_address = null or _address = '')
+		then
+        SET @RetCode='0';
+		SET @RetVal='地址不能为空';
 	end if;
     if(_tel = null or _tel = '')
 		then
         SET @RetCode='0';
-		SET @RetVal='物业接口人电话不能为空';
+		SET @RetVal='电话不能为空';
 	end if;
-    if(_mail = null or _mail = '')
+    if(_description = null or _description = '')
 		then
         SET @RetCode='0';
-		SET @RetVal='物业接口人邮箱不能为空';
+		SET @RetVal='简介不能为空';
 	end if;
     if(_creater_id = null or _creater_id = '')
 		then
@@ -37,31 +41,25 @@ BEGIN
         SET @RetCode='0';
 		SET @RetVal='创建人姓名不能为空';
 	end if;
-    if(_ou_id = null or _ou_id = 0)
-		then
-        SET @RetCode='0';
-		SET @RetVal='组织机构id不能为空';
-	end if;
     
     if(@RetCode = '1')
 		then
-		insert into `t_m_room_linker` (
+		insert into `t_m_ou` (
 			`name`,
+			address,
 			tel,
-			mail,
+			description,
 			creater_id,
 			creater_name,
-			create_time,
-			ou_id
-		)
-		select
+			create_time
+		) select
 			_name,
+			_address,
 			_tel,
-			_mail,
+			_description,
 			_creater_id,
 			_creater_name,
-			NOW(),
-			_ou_id;
+			NOW();
 	end if;
     SELECT @RetVal AS RetVal, @RetCode AS RetCode ;
 END
