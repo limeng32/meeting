@@ -1,4 +1,4 @@
-CREATE DEFINER=`sa`@`%` PROCEDURE `t_m_add_meeting_type`(
+CREATE DEFINER=`sa`@`%` PROCEDURE `t_m_add_meeting_level`(
 	_name nvarchar(40),
     _creater_id nvarchar(40),
     _creater_name nvarchar(40),
@@ -12,9 +12,9 @@ BEGIN
     if(_name = null or _name = '')
 		then
         SET @RetCode='0';
-		SET @RetVal='会议室类型名称不能为空';
+		SET @RetVal='会议级别名称不能为空';
 	end if;
-    if(_creater_id = null or _creater_id = '')
+     if(_creater_id = null or _creater_id = '')
 		then
         SET @RetCode='0';
 		SET @RetVal='创建人id不能为空';
@@ -32,7 +32,7 @@ BEGIN
     
     if(@RetCode = '1')
 		then
-        insert into `t_m_meeting_type` (
+        insert into `t_m_meeting_level` (
 			`name`,
             creater_id,
 			creater_name,
@@ -44,6 +44,6 @@ BEGIN
             _creater_name,
             _ou_id,
             NOW();
-     end if;       
-     SELECT @RetVal AS RetVal, @RetCode AS RetCode ;       
+	end if;
+    SELECT @RetVal AS RetVal, @RetCode AS RetCode ;       
 END
